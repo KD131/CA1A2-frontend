@@ -4,6 +4,7 @@ import * as bootstrap from 'bootstrap';
 import '@popperjs/core';
 import personFacade from "./personFacade"
 import hobbyFacade from "./hobbyFacade"
+import addressFacade from "./addressFacade"
 
 document.getElementById("all-content").style.display = "block"
 
@@ -63,7 +64,22 @@ function getAllHobbies() {
 }
 
 
-/* JS For Exercise-3 below */
+/* ADDRESSES */
+function getAllAddresses() {
+    addressFacade.getAll()
+        .then(data => {
+            let dataTableString = data.map(a =>
+                `<tr>
+                    <td>${a.id}</td>
+                    <td>${a.address}</td>
+                    <td>${a.zip.id}</td>
+                    <td>${a.zip.city}</td>
+                </tr>`)
+                .join("");
+            document.getElementById("addresses_table").innerHTML = dataTableString;
+        })
+        .catch(displayError);
+}
 
 
 /* 
@@ -92,6 +108,7 @@ function menuItemClicked(evt) {
             break
         case "addresses_tab":
             hideAllShowOne("addresses_html");
+            getAllAddresses();
             break
         default:
             hideAllShowOne("about_html");
