@@ -29,38 +29,42 @@ function displayError(err) {
 function getAllPersons() {
     personFacade.getAll()
         .then(data => {
-            let dataTableString = data.map(p =>
-                `<tr>
-                    <td>${p.id}</td>
-                    <td>${p.firstName}</td>
-                    <td>${p.lastName}</td>
-                    <td>${p.email}</td>
-                    <td>${p.address.address}</td>
-                    <td>${p.address.zip.city}</td>
-                    <td>${p.address.zip.id}</td>
-                </tr>`)
-                .join("");
+            let dataTableString = data.map(getPersonRow).join("");
             document.getElementById("persons_table").innerHTML = dataTableString;
         })
         .catch(displayError);
+}
+
+function getPersonRow(p) {
+    return `<tr>
+                <td>${p.id}</td>
+                <td>${p.firstName}</td>
+                <td>${p.lastName}</td>
+                <td>${p.email}</td>
+                <td>${p.address.address}</td>
+                <td>${p.address.zip.city}</td>
+                <td>${p.address.zip.id}</td>
+            </tr>`;
 }
 
 /* HOBBIES */
 function getAllHobbies() {
     hobbyFacade.getAll()
         .then(data => {
-            let dataTableString = data.map(h =>
-                `<tr>
-                    <td>${h.id}</td>
-                    <td>${h.name}</td>
-                    <td>${h.link}</td>
-                    <td>${h.category}</td>
-                    <td>${h.type}</td>
-                </tr>`)
-                .join("");
+            let dataTableString = data.map(getHobbyRow).join("");
             document.getElementById("hobbies_table").innerHTML = dataTableString;
         })
         .catch(displayError);
+}
+
+function getHobbyRow(h) {
+    return `<tr>
+                <td>${h.id}</td>
+                <td>${h.name}</td>
+                <td>${h.link}</td>
+                <td>${h.category}</td>
+                <td>${h.type}</td>
+            </tr>`;
 }
 
 
@@ -68,17 +72,19 @@ function getAllHobbies() {
 function getAllAddresses() {
     addressFacade.getAll()
         .then(data => {
-            let dataTableString = data.map(a =>
-                `<tr>
-                    <td>${a.id}</td>
-                    <td>${a.address}</td>
-                    <td>${a.zip.id}</td>
-                    <td>${a.zip.city}</td>
-                </tr>`)
-                .join("");
+            let dataTableString = data.map(getAddressRow).join("");
             document.getElementById("addresses_table").innerHTML = dataTableString;
         })
         .catch(displayError);
+}
+
+function getAddressRow(a) {
+    return `<tr>
+                <td>${a.id}</td>
+                <td>${a.address}</td>
+                <td>${a.zip.id}</td>
+                <td>${a.zip.city}</td>
+            </tr>`;
 }
 
 
