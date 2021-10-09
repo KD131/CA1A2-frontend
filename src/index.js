@@ -2,8 +2,8 @@ import "./style.css"
 import "bootstrap/dist/css/bootstrap.css"
 import * as bootstrap from 'bootstrap';
 import '@popperjs/core';
-import "./jokeFacade"
 import personFacade from "./personFacade"
+import hobbyFacade from "./hobbyFacade"
 
 document.getElementById("all-content").style.display = "block"
 
@@ -24,27 +24,43 @@ function displayError(err) {
     }
 }
 
+/* PERSONS */
 function getAllPersons() {
     personFacade.getAll()
         .then(data => {
             let dataTableString = data.map(p =>
                 `<tr>
-          <td>${p.id}</td>
-          <td>${p.firstName}</td>
-          <td>${p.lastName}</td>
-          <td>${p.email}</td>
-          <td>${p.address.address}</td>
-          <td>${p.address.zip.city}</td>
-          <td>${p.address.zip.id}</td>
-        </tr>`)
+                    <td>${p.id}</td>
+                    <td>${p.firstName}</td>
+                    <td>${p.lastName}</td>
+                    <td>${p.email}</td>
+                    <td>${p.address.address}</td>
+                    <td>${p.address.zip.city}</td>
+                    <td>${p.address.zip.id}</td>
+                </tr>`)
                 .join("");
             document.getElementById("persons_table").innerHTML = dataTableString;
         })
-        .catch(displayError)
+        .catch(displayError);
 }
 
-/* JS For Exercise-2 below */
-
+/* HOBBIES */
+function getAllHobbies() {
+    hobbyFacade.getAll()
+        .then(data => {
+            let dataTableString = data.map(h =>
+                `<tr>
+                    <td>${h.id}</td>
+                    <td>${h.name}</td>
+                    <td>${h.link}</td>
+                    <td>${h.category}</td>
+                    <td>${h.type}</td>
+                </tr>`)
+                .join("");
+            document.getElementById("hobbies_table").innerHTML = dataTableString;
+        })
+        .catch(displayError);
+}
 
 
 /* JS For Exercise-3 below */
@@ -72,6 +88,7 @@ function menuItemClicked(evt) {
             break
         case "hobbies_tab":
             hideAllShowOne("hobbies_html");
+            getAllHobbies();
             break
         case "addresses_tab":
             hideAllShowOne("addresses_html");
