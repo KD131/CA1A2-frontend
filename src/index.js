@@ -56,7 +56,7 @@ function getPersonRow(p) {
 const personsModalElement = document.getElementById("persons_modal");
 const personsModal = new bootstrap.Modal(personsModalElement);
 
-function createPerson() {
+function formCreatePerson() {
     document.querySelector("#persons_modal .modal-title").innerHTML = "Create new person";
     let confirmButton = document.getElementById("persons_modal_confirm");
     confirmButton.name = "create";
@@ -64,7 +64,7 @@ function createPerson() {
     personsModal.toggle();
 }
 
-function editPerson(id) {
+function formEditPerson(id) {
     document.querySelector("#persons_modal .modal-title").innerHTML = "Update person";
     let confirmButton = document.getElementById("persons_modal_confirm");
     confirmButton.name = "edit";
@@ -74,15 +74,75 @@ function editPerson(id) {
 
     personFacade.getById(id)
         .then(p => {
+            form.person_id.value = p.id;
             form.first_name.value = p.firstName;
             form.last_name.value = p.lastName;
             form.email.value = p.email;
             form.address.value = p.address.address;
             form.city.value = p.address.zip.city;
             form.zip.value = p.address.zip.id;
+
+            // assert i == phoneRowCount at start
+            for (let i = 0; i < p.phones.length; i++) {
+                addPhoneRowToPerson();
+                form[`phone_number${i}`].value = p.phones[i].number;
+                form[`phone_info${i}`].value = p.phones[i].info;
+            }
         })
 
     personsModal.toggle();
+}
+
+function getPersonFromForm(form) {
+    let person = {
+        id: form.person_id.value,
+        firstName: form.first_name.value,
+        lastName: form.last_name.value,
+        email: form.email.value,
+        address: {
+            address: form.address.value,
+            zip: {
+                id: form.zip.value,
+                city: form.city.value
+            }
+        }
+    }
+
+    let phones = [];
+    let phoneCount = document.getElementById("phone_rows").childElementCount;
+    if (phoneCount === 1) {
+        phones.push({
+            number: form.phone_number.value,
+            info: form.phone_info.value
+        })
+    }
+    else {
+        for (let i = 0; i < phoneCount; i++) {
+            phones.push({
+                number: form.phone_number[i].value,
+                info: form.phone_info[i].value
+            })
+        }
+    }
+
+    person.phones = phones;
+
+    person.hobbies = [];
+
+    return person;
+}
+
+function createPerson() {
+
+}
+
+function editPerson() {
+    let form = document.getElementById("persons_form");
+    let person = getPersonFromForm(form);
+    personFacade.update(person)
+        .then(getAllPersons)
+        .catch(displayError);
+    personsModal.hide();
 }
 
 function deletePerson(id) {
@@ -95,10 +155,10 @@ document.getElementById("persons_table").addEventListener("click", evt => {
     let name = evt.target.name;
     switch (name) {
         case "create":
-            createPerson();
+            formCreatePerson();
             break;
         case "edit":
-            editPerson(evt.target.value);
+            formEditPerson(evt.target.value);
             break;
         case "delete":
             deletePerson(evt.target.value);
@@ -109,7 +169,8 @@ var phoneRowCount = 0;
 
 function addPhoneRowToPerson() {
     let phoneRows = document.getElementById("phone_rows");
-    phoneRows.innerHTML += `<div id="phone${phoneRowCount}" class="row mb-3">
+    phoneRows.insertAdjacentHTML("beforeend",
+        `<div id="phone${phoneRowCount}" class="row mb-3">
                                 <div class="col-6">
                                     <label class="form-label" for="phone_number${phoneRowCount}">Phone number</label>
                                     <input class="form-control" type="text" id="phone_number${phoneRowCount}" name="phone_number" placeholder="12345678">
@@ -120,7 +181,7 @@ function addPhoneRowToPerson() {
                                 </div>
                                 <div class="col-3">
                                     <button type="button" class="btn btn-danger" id="phone_remove${phoneRowCount}" name="phone_remove" value="${phoneRowCount}">Remove</button>
-                            </div>`;
+                            </div>`);
     phoneRowCount++;
 }
 
@@ -138,6 +199,14 @@ document.getElementById("phone_section").addEventListener("click", evt => {
     }
 });
 
+document.getElementById("persons_modal_confirm").addEventListener("click", evt => {
+    let name = evt.target.name;
+    switch (name) {
+        case "create": createPerson(); break;
+        case "edit": editPerson(); break;
+    }
+})
+
 function clearPersonsForm() {
     phoneRowCount = 0;
     document.getElementById("phone_rows").innerHTML = "";
@@ -151,6 +220,8 @@ function clearPersonsForm() {
 }
 
 personsModalElement.addEventListener("hidden.bs.modal", clearPersonsForm);
+
+
 
 /* HOBBIES */
 function getAllHobbies() {
@@ -171,6 +242,7 @@ function getHobbyRow(h) {
                 <td>${h.type}</td>
             </tr>`;
 }
+
 
 
 /* ADDRESSES */
