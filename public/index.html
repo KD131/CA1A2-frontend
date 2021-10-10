@@ -44,63 +44,78 @@
 
                 <div id="persons_modal" class="modal" tabindex="-1">
                     <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title"></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <form id="persons_form">
+                                        <input type="hidden" id="person_id" name="person_id">
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <label class="form-label" for="first_name">First name</label>
+                                                <input class="form-control" type="text" id="first_name" name="first_name" placeholder="Bob">
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label" for="last_name">Last name</label>
+                                                <input class="form-control" type="text" id="last_name" name="last_name" placeholder="Roberts">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-5">
+                                            <div class="col">
+                                                <label class="form-label" for="email">Email</label>
+                                                <input class="form-control" type="email" id="email" name="email" placeholder="bob@bob.com">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <label class="form-label" for="address">Address</label>
+                                                <input class="form-control" type="text" id="address" name="address" placeholder="Bob Street 42">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-5">
+                                            <div class="col">
+                                                <label class="form-label" for="city">City</label>
+                                                <input class="form-control" type="text" id="city" name="city" placeholder="Bob City">
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label" for="zip">Zip</label>
+                                                <input class="form-control" type="text" id="zip" name="zip" maxlength="4" placeholder="1234">
+                                            </div>
+                                        </div>
+                                        <div id="phone_section" class="mb-5">
+                                            <h5>Phones</h5>
+                                            <button type="button" class="btn btn-success mb-2" id="phone_add" name="phone_add">Add
+                                                phone</button>
+                                            <div id="phone_rows">
+                                            </div>
+                                        </div>
+                                        <div id="hobby_section">
+                                            <h5>Hobbies</h5>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="hobby_input" name="hobby_input">
+                                                </div>
+                                                <div class="col">
+                                                    <button type="button" class="btn btn-success mb-2" id="hobby_add" name="hobby_add">Add
+                                                        hobby</button>
+                                                </div>
+                                                <div id="hobby_rows">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="persons_modal_confirm">Save changes</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                        <div class="container-fluid">
-                            <form id="persons_form">
-                                <input type="hidden" id="person_id" name="person_id">
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label class="form-label" for="first_name">First name</label>
-                                        <input class="form-control" type="text" id="first_name" name="first_name" placeholder="Bob">
-                                    </div>
-                                    <div class="col">
-                                        <label class="form-label" for="last_name">Last name</label>
-                                        <input class="form-control" type="text" id="last_name" name="last_name" placeholder="Roberts">
-                                    </div>
-                                </div>
-                                <div class="row mb-5">
-                                    <div class="col">
-                                        <label class="form-label" for="email">Email</label>
-                                        <input class="form-control" type="email" id="email" name="email" placeholder="bob@bob.com">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label class="form-label" for="address">Address</label>
-                                        <input class="form-control" type="text" id="address" name="address" placeholder="Bob Street 42">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label class="form-label" for="city">City</label>
-                                        <input class="form-control" type="text" id="city" name="city" placeholder="Bob City">
-                                    </div>
-                                    <div class="col">
-                                        <label class="form-label" for="zip">Zip</label>
-                                        <input class="form-control" type="text" id="zip" name="zip" maxlength="4" placeholder="1234">
-                                    </div>
-                                </div>
-                                <div id="phone_section">
-                                    <h5>Phones</h5>
-                                    <button type="button" class="btn btn-success mb-2" id="phone_add" name="phone_add">Add phone</button>
-                                    <div id="phone_rows">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary" id="persons_modal_confirm">Save changes</button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
                   
                 <h3>Persons</h3>
                 <form id="persons_search">
@@ -144,45 +159,46 @@
 
                 <div id="hobbies_modal" class="modal" tabindex="-1">
                     <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title"></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <div class="container-fluid">
-                            <form id="hobbies_form">
-                                <input type="hidden" id="hobby_id" name="hobby_id">
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label class="form-label" for="name">Name</label>
-                                        <input class="form-control" type="text" id="name" name="name" placeholder="Skiing">
-                                    </div>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <form id="hobbies_form">
+                                        <input type="hidden" id="hobby_id" name="hobby_id">
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <label class="form-label" for="name">Name</label>
+                                                <input class="form-control" type="text" id="name" name="name" placeholder="Skiing">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <label class="form-label" for="link">Link</label>
+                                                <input class="form-control" type="text" id="link" name="link" placeholder="skiing.com">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-5">
+                                            <div class="col">
+                                                <label class="form-label" for="category">Category</label>
+                                                <input class="form-control" type="text" id="category" name="category"
+                                                    placeholder="Generel">
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label" for="type">Type</label>
+                                                <input class="form-control" type="text" id="type" name="type" placeholder="Udendørs">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label class="form-label" for="link">Link</label>
-                                        <input class="form-control" type="text" id="link" name="link" placeholder="skiing.com">
-                                    </div>
-                                </div>
-                                <div class="row mb-5">
-                                    <div class="col">
-                                        <label class="form-label" for="category">Category</label>
-                                        <input class="form-control" type="text" id="category" name="category" placeholder="Generel">
-                                    </div>
-                                    <div class="col">
-                                        <label class="form-label" for="type">Type</label>
-                                        <input class="form-control" type="text" id="type" name="type" placeholder="Udendørs">
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="hobbies_modal_confirm">Save changes</button>
+                            </div>
                         </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary" id="hobbies_modal_confirm">Save changes</button>
-                        </div>
-                      </div>
                     </div>
                 </div>
 

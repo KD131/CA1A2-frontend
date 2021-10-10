@@ -121,6 +121,8 @@ function formEditPerson(id) {
                 form[`phone_number${i}`].value = p.phones[i].number;
                 form[`phone_info${i}`].value = p.phones[i].info;
             }
+
+            p.hobbies.forEach(addHobbyRowToPerson);
         })
 
     personsModal.toggle();
@@ -164,7 +166,30 @@ function getPersonFromForm(form) {
 
     person.phones = phones;
 
-    person.hobbies = [];
+    let hobbies = [];
+    let hobbyCount = document.getElementById("hobby_rows").childElementCount;
+    if (hobbyCount === 1) {
+        hobbies.push({
+            id: form.hobby_id.value,
+            name: form.hobby_name.value,
+            link: form.hobby_link.value,
+            category: form.hobby_category.value,
+            type: form.hobby_type.value
+        })
+    }
+    else {
+        for (let i = 0; i < hobbyCount; i++) {
+            hobbies.push({
+                id: form.hobby_id[i].value,
+                name: form.hobby_name[i].value,
+                link: form.hobby_link[i].value,
+                category: form.hobby_category[i].value,
+                type: form.hobby_type[i].value
+            })
+        }
+    }
+    
+    person.hobbies = hobbies;
 
     return person;
 }
@@ -241,6 +266,65 @@ document.getElementById("phone_section").addEventListener("click", evt => {
     }
 });
 
+function getHobbyForPerson(id) {
+    hobbyFacade.getById(id)
+        .then(addHobbyRowToPerson)
+        .catch(displayError);
+}
+
+var hobbyRowCount = 0;
+
+function addHobbyRowToPerson(h) {
+    let hobbyRows = document.getElementById("hobby_rows");
+    hobbyRows.insertAdjacentHTML("beforeend",
+        `<div id="hobby${hobbyRowCount}">
+            <input type="hidden" id="hobby_id${hobbyRowCount}" name="hobby_id" value="${h.id}">
+            <div class="row mb-3">
+                <div class="col-9">
+                    <label class="form-label" for="name${hobbyRowCount}">Name</label>
+                    <input class="form-control" type="text" id="name${hobbyRowCount}" name="hobby_name" value="${h.name}" placeholder="Skiing" disabled>
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-danger" id="hobby_remove${hobbyRowCount}" name="hobby_remove" value="${hobbyRowCount}">Remove</button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label class="form-label" for="link${hobbyRowCount}">Link</label>
+                    <input class="form-control" type="text" id="link${hobbyRowCount}" name="hobby_link" value="${h.link}" placeholder="skiing.com" disabled>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <label class="form-label" for="category${hobbyRowCount}">Category</label>
+                    <input class="form-control" type="text" id="category${hobbyRowCount}" name="hobby_category" value="${h.category}"
+                        placeholder="Generel" disabled>
+                </div>
+                <div class="col">
+                    <label class="form-label" for="type${hobbyRowCount}">Type</label>
+                    <input class="form-control" type="text" id="type${hobbyRowCount}" name="hobby_type" value="${h.type}" placeholder="Udendørs" disabled>
+                </div>
+            </div>
+        </div>`);
+    hobbyRowCount++;
+}
+
+// could also take the element as argument based on a parent of the target.
+function removeHobbyRowFromPerson(i) {
+    let hobbyRow = document.getElementById(`hobby${i}`);
+    hobbyRow.remove();
+}
+
+document.getElementById("hobby_section").addEventListener("click", evt => {
+    let name = evt.target.name;
+    let input = document.getElementById("hobby_input").value;
+    switch (name) {
+        case "hobby_add":
+            if (input) getHobbyForPerson(input); break;
+        case "hobby_remove": removeHobbyRowFromPerson(evt.target.value); break;
+    }
+});
+
 document.getElementById("persons_modal_confirm").addEventListener("click", evt => {
     let name = evt.target.name;
     switch (name) {
@@ -252,6 +336,8 @@ document.getElementById("persons_modal_confirm").addEventListener("click", evt =
 function clearPersonsForm() {
     phoneRowCount = 0;
     document.getElementById("phone_rows").innerHTML = "";
+    hobbyRowCount = 0;
+    document.getElementById("hobby_rows").innerHTML = "";
     let form = document.getElementById("persons_form");
     form.person_id.value = "";
     form.first_name.value = "";
