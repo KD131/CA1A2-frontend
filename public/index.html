@@ -35,15 +35,15 @@
                         </div>
                         <div class="modal-body">
                         <div class="container-fluid">
-                            <form>
+                            <form id="persons_form">
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label class="form-label" for="firstName">First name</label>
-                                        <input class="form-control" type="text" id="firstName" name="firstName" placeholder="Bob">
+                                        <label class="form-label" for="first_name">First name</label>
+                                        <input class="form-control" type="text" id="first_name" name="first_name" placeholder="Bob">
                                     </div>
                                     <div class="col">
-                                        <label class="form-label" for="lastName">Last name</label>
-                                        <input class="form-control" type="text" id="lastName" name="lastName" placeholder="Roberts">
+                                        <label class="form-label" for="last_name">Last name</label>
+                                        <input class="form-control" type="text" id="last_name" name="last_name" placeholder="Roberts">
                                     </div>
                                 </div>
                                 <div class="row mb-5">
@@ -68,10 +68,10 @@
                                         <input class="form-control" type="text" id="zip" name="zip" maxlength="4" placeholder="1234">
                                     </div>
                                 </div>
-                                <div id="phone-section">
+                                <div id="phone_section">
                                     <h5>Phones</h5>
-                                    <button type="button" class="btn btn-success" id="phone-add" name="phone-add">Add phone</button>
-                                    <div id="phone-rows">
+                                    <button type="button" class="btn btn-success mb-2" id="phone_add" name="phone_add">Add phone</button>
+                                    <div id="phone_rows">
                                     </div>
                                 </div>
                             </form>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
+                          <button type="button" class="btn btn-primary" id="persons_modal_confirm">Save changes</button>
                         </div>
                       </div>
                     </div>

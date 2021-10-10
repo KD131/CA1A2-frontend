@@ -53,23 +53,52 @@ function getPersonRow(p) {
             </tr>`;
 }
 
+const personsModalElement = document.getElementById("persons_modal");
+const personsModal = new bootstrap.Modal(personsModalElement);
+
+function createPerson() {
+    document.querySelector("#persons_modal .modal-title").innerHTML = "Create new person";
+    let confirmButton = document.getElementById("persons_modal_confirm");
+    confirmButton.name = "create";
+    confirmButton.innerHTML = "Create person";
+    personsModal.toggle();
+}
+
+function editPerson(id) {
+    document.querySelector("#persons_modal .modal-title").innerHTML = "Update person";
+    let confirmButton = document.getElementById("persons_modal_confirm");
+    confirmButton.name = "edit";
+    confirmButton.innerHTML = "Update person";
+
+    let form = document.getElementById("persons_form");
+
+    personFacade.getById(id)
+        .then(p => {
+            form.first_name.value = p.firstName;
+            form.last_name.value = p.lastName;
+            form.email.value = p.email;
+            form.address.value = p.address.address;
+            form.city.value = p.address.zip.city;
+            form.zip.value = p.address.zip.id;
+        })
+
+    personsModal.toggle();
+}
+
 function deletePerson(id) {
     personFacade.deletePerson(id)
         .then(getAllPersons)
         .catch(displayError);
 }
 
-var personsModal = new bootstrap.Modal(document.getElementById("persons_modal"));
 document.getElementById("persons_table").addEventListener("click", evt => {
     let name = evt.target.name;
     switch (name) {
         case "create":
-            document.querySelector("#persons_modal .modal-title").innerHTML = "Create new person"
-            personsModal.toggle();
+            createPerson();
             break;
         case "edit":
-            document.querySelector("#persons_modal .modal-title").innerHTML = "Edit person"
-            personsModal.toggle();
+            editPerson(evt.target.value);
             break;
         case "delete":
             deletePerson(evt.target.value);
@@ -79,18 +108,18 @@ document.getElementById("persons_table").addEventListener("click", evt => {
 var phoneRowCount = 0;
 
 function addPhoneRowToPerson() {
-    let phoneRows = document.getElementById("phone-rows");
+    let phoneRows = document.getElementById("phone_rows");
     phoneRows.innerHTML += `<div id="phone${phoneRowCount}" class="row mb-3">
                                 <div class="col-6">
-                                    <label class="form-label" for="phone-number${phoneRowCount}">Phone number</label>
-                                    <input class="form-control" type="text" id="phone-number${phoneRowCount}" name="phone-number" placeholder="12345678">
+                                    <label class="form-label" for="phone_number${phoneRowCount}">Phone number</label>
+                                    <input class="form-control" type="text" id="phone_number${phoneRowCount}" name="phone_number" placeholder="12345678">
                                 </div>
                                 <div class="col-3">
-                                    <label class="form-label" for="phone-info${phoneRowCount}">Info</label>
-                                    <input class="form-control" type="text" id="phone-info${phoneRowCount}" name="phone-info" placeholder="work">
+                                    <label class="form-label" for="phone_info${phoneRowCount}">Info</label>
+                                    <input class="form-control" type="text" id="phone_info${phoneRowCount}" name="phone_info" placeholder="work">
                                 </div>
                                 <div class="col-3">
-                                    <button type="button" class="btn btn-danger" id="phone-remove${phoneRowCount}" name="phone-remove" value="${phoneRowCount}">Remove</button>
+                                    <button type="button" class="btn btn-danger" id="phone_remove${phoneRowCount}" name="phone_remove" value="${phoneRowCount}">Remove</button>
                             </div>`;
     phoneRowCount++;
 }
@@ -101,13 +130,27 @@ function removePhoneRowFromPerson(i) {
     phoneRow.remove();
 }
 
-document.getElementById("phone-section").addEventListener("click", evt => {
+document.getElementById("phone_section").addEventListener("click", evt => {
     let name = evt.target.name;
     switch (name) {
-        case "phone-add": addPhoneRowToPerson(); break;
-        case "phone-remove": removePhoneRowFromPerson(evt.target.value); break;
+        case "phone_add": addPhoneRowToPerson(); break;
+        case "phone_remove": removePhoneRowFromPerson(evt.target.value); break;
     }
 });
+
+function clearPersonsForm() {
+    phoneRowCount = 0;
+    document.getElementById("phone_rows").innerHTML = "";
+    let form = document.getElementById("persons_form");
+    form.first_name.value = "";
+    form.last_name.value = "";
+    form.email.value = "";
+    form.address.value = "";
+    form.city.value = "";
+    form.zip.value = "";
+}
+
+personsModalElement.addEventListener("hidden.bs.modal", clearPersonsForm);
 
 /* HOBBIES */
 function getAllHobbies() {
