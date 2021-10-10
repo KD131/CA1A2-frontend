@@ -69,15 +69,19 @@ function getPersonRow(p) {
             </tr>`;
 }
 
-document.getElementById("persons_search_btn").addEventListener("click", evt => {
+document.getElementById("persons_search").addEventListener("submit", evt => {
+    evt.preventDefault();
     let search = document.getElementById("persons_search_field").value;
     let method = document.getElementById("persons_search_select").value;
-    switch (method) {
-        case "id": populatePersonsTable(personFacade.getById(search)); break;
-        case "phone": populatePersonsTable(personFacade.getByPhone(search)); break;
-        case "zip": populatePersonsTable(personFacade.getByZip(search)); break;
-        case "address": populatePersonsTable(personFacade.getByAddress(search)); break;
+    if (search) {
+        switch (method) {
+            case "id": populatePersonsTable(personFacade.getById(search)); break;
+            case "phone": populatePersonsTable(personFacade.getByPhone(search)); break;
+            case "zip": populatePersonsTable(personFacade.getByZip(search)); break;
+            case "address": populatePersonsTable(personFacade.getByAddress(search)); break;
+        }
     }
+    else getAllPersons();
 });
 
 const personsModalElement = document.getElementById("persons_modal");
