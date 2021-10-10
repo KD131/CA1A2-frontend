@@ -55,7 +55,16 @@ function deleteHobby(id) {
 }
 
 const hobbyFacade = {
-    getAll
+    getAll,
+    getById,
+    getByCategory,
+    getByType,
+    getByPersonId,
+    getByZip,
+    getByAddress,
+    create,
+    update,
+    deleteHobby
 }
 
 export default hobbyFacade;
