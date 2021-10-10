@@ -101,7 +101,6 @@ function formEditPerson(id) {
 
 function getPersonFromForm(form) {
     let person = {
-        id: form.person_id.value,
         firstName: form.first_name.value,
         lastName: form.last_name.value,
         email: form.email.value,
@@ -112,6 +111,11 @@ function getPersonFromForm(form) {
                 city: form.city.value
             }
         }
+    }
+
+    let id = form.person_id.value;
+    if (id) {
+        person.id = id;
     }
 
     let phones = [];
@@ -222,6 +226,7 @@ function clearPersonsForm() {
     phoneRowCount = 0;
     document.getElementById("phone_rows").innerHTML = "";
     let form = document.getElementById("persons_form");
+    form.person_id.value = "";
     form.first_name.value = "";
     form.last_name.value = "";
     form.email.value = "";
@@ -291,13 +296,17 @@ function formEditHobby(id) {
 
 function getHobbyFromForm(form) {
     let hobby = {
-        id: form.hobby_id.value,
         name: form.name.value,
         link: form.link.value,
         category: form.category.value,
         type: form.type.value
     }
 
+    let id = form.hobby_id.value;
+    if (id) {
+        hobby.id = id;
+    }
+    
     return hobby;
 }
 
@@ -349,6 +358,7 @@ document.getElementById("hobbies_modal_confirm").addEventListener("click", evt =
 
 function clearHobbiesForm() {
     let form = document.getElementById("hobbies_form");
+    form.hobby_id.value = "";
     form.name.value = "";
     form.link.value = "";
     form.category.value = "";
