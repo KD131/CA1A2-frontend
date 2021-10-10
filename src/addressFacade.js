@@ -25,6 +25,7 @@ function getByZip(zip) {
 function create(hobby) {
     let opts = makeOptions("POST", hobby);
     return fetch(`${URL}`, opts)
+        .then(handleHttpErrors);
 }
      
 function update(hobby) {

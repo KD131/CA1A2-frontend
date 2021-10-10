@@ -12,17 +12,22 @@ document.getElementById("all-content").style.display = "block"
   Add your JavaScript for all exercises Below or in separate js-files, which you must the import above
 */
 
-/* JS For Exercise-1 below */
+const errorModalElement = document.getElementById("error_modal");
+const errorModal = new bootstrap.Modal(errorModalElement);
+
 function displayError(err) {
-    let errorElement = document.getElementById("error");
+    let title = errorModalElement.querySelector(".modal-title");
+    let body = errorModalElement.querySelector(".modal-body");
     if (err.status) {
         err.fullError.then(e => {
-            errorElement.innerHTML = `${e.code}: ${e.message}`;
+            title.innerHTML = e.code;
+            body.innerHTML = e.message;
         })
     }
     else {
-        errorElement.innerHTML = "Network error";
+        body.innerHTML = "Network error";
     }
+    errorModal.show();
 }
 
 /* PERSONS */
@@ -133,7 +138,12 @@ function getPersonFromForm(form) {
 }
 
 function createPerson() {
-
+    let form = document.getElementById("persons_form");
+    let person = getPersonFromForm(form);
+    personFacade.create(person)
+        .then(getAllPersons)
+        .catch(displayError);
+    personsModal.hide();
 }
 
 function editPerson() {

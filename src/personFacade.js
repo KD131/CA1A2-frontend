@@ -30,6 +30,7 @@ function getByAddress(id) {
 function create(person) {
     let opts = makeOptions("POST", person);
     return fetch(`${URL}`, opts)
+        .then(handleHttpErrors);
 }
      
 function update(person) {
