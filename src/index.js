@@ -30,7 +30,7 @@ function getAllPersons() {
     personFacade.getAll()
         .then(data => {
             let dataTableString = data.map(getPersonRow).join("");
-            document.getElementById("persons_table").innerHTML = dataTableString;
+            document.getElementById("persons_tbody").innerHTML = dataTableString;
         })
         .catch(displayError);
 }
@@ -41,11 +41,65 @@ function getPersonRow(p) {
                 <td>${p.firstName}</td>
                 <td>${p.lastName}</td>
                 <td>${p.email}</td>
-                <td>${p.address.address}</td>
-                <td>${p.address.zip.city}</td>
-                <td>${p.address.zip.id}</td>
+                <td>${p.phones.map(ph =>
+        `${ph.number} (${ph.info})`).join("<br>")}</td>
+                <td>${p.hobbies.map(h =>
+            h.name).join("<br>")}</td>
+                <td>${p.address.zip.id} ${p.address.zip.city}, ${p.address.address}</td>
+                <td>
+                    <button id="edit${p.id}" class="btn btn-warning" name="edit" value="${p.id}">Edit</button>
+                    <button id="delete${p.id}" class="btn btn-danger" name="delete" value="${p.id}">Delete</button>
+                </td>
             </tr>`;
 }
+
+var personsModal = new bootstrap.Modal(document.getElementById("persons_modal"));
+document.getElementById("persons_table").addEventListener("click", evt => {
+    let name = evt.target.name;
+    switch (name) {
+        case "create":
+            document.querySelector("#persons_modal .modal-title").innerHTML = "Create new person"
+            personsModal.toggle();
+            break;
+        case "edit":
+            document.querySelector("#persons_modal .modal-title").innerHTML = "Edit person"
+            personsModal.toggle();
+            break;
+    }
+})
+
+var phoneRowCount = 0;
+
+function addPhoneRowToPerson() {
+    let phoneRows = document.getElementById("phone-rows");
+    phoneRows.innerHTML += `<div id="phone${phoneRowCount}" class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label" for="phone-number${phoneRowCount}">Phone number</label>
+                                    <input class="form-control" type="text" id="phone-number${phoneRowCount}" name="phone-number" placeholder="12345678">
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label" for="phone-info${phoneRowCount}">Info</label>
+                                    <input class="form-control" type="text" id="phone-info${phoneRowCount}" name="phone-info" placeholder="work">
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-danger" id="phone-remove${phoneRowCount}" name="phone-remove" value="${phoneRowCount}">Remove</button>
+                            </div>`;
+    phoneRowCount++;
+}
+
+// could also take the element as argument based on a parent of the target.
+function removePhoneRowFromPerson(i) {
+    let phoneRow = document.getElementById(`phone${i}`);
+    phoneRow.remove();
+}
+
+document.getElementById("phone-section").addEventListener("click", evt => {
+    let name = evt.target.name;
+    switch (name) {
+        case "phone-add": addPhoneRowToPerson(); break;
+        case "phone-remove": removePhoneRowFromPerson(evt.target.value); break;
+    }
+});
 
 /* HOBBIES */
 function getAllHobbies() {
