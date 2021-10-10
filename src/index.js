@@ -12,6 +12,7 @@ document.getElementById("all-content").style.display = "block"
   Add your JavaScript for all exercises Below or in separate js-files, which you must the import above
 */
 
+/* ERROR */
 const errorModalElement = document.getElementById("error_modal");
 const errorModal = new bootstrap.Modal(errorModalElement);
 
@@ -256,6 +257,105 @@ function getHobbyRow(h) {
                 </td>
             </tr>`;
 }
+
+const hobbiesModalElement = document.getElementById("hobbies_modal");
+const hobbiesModal = new bootstrap.Modal(hobbiesModalElement);
+
+function formCreateHobby() {
+    document.querySelector("#hobbies_modal .modal-title").innerHTML = "Create new hobby";
+    let confirmButton = document.getElementById("hobbies_modal_confirm");
+    confirmButton.name = "create";
+    confirmButton.innerHTML = "Create hobby";
+    hobbiesModal.toggle();
+}
+
+function formEditHobby(id) {
+    document.querySelector("#hobbies_modal .modal-title").innerHTML = "Update hobby";
+    let confirmButton = document.getElementById("hobbies_modal_confirm");
+    confirmButton.name = "edit";
+    confirmButton.innerHTML = "Update hobby";
+
+    let form = document.getElementById("hobbies_form");
+
+    hobbyFacade.getById(id)
+        .then(h => {
+            form.hobby_id.value = h.id;
+            form.name.value = h.name;
+            form.link.value = h.link;
+            form.category.value = h.category;
+            form.type.value = h.type;
+        })
+
+    hobbiesModal.toggle();
+}
+
+function getHobbyFromForm(form) {
+    let hobby = {
+        id: form.hobby_id.value,
+        name: form.name.value,
+        link: form.link.value,
+        category: form.category.value,
+        type: form.type.value
+    }
+
+    return hobby;
+}
+
+function createHobby() {
+    let form = document.getElementById("hobbies_form");
+    let hobby = getHobbyFromForm(form);
+    hobbyFacade.create(hobby)
+        .then(getAllHobbies)
+        .catch(displayError);
+    hobbiesModal.hide();
+}
+
+function editHobby() {
+    let form = document.getElementById("hobbies_form");
+    let hobby = getHobbyFromForm(form);
+    hobbyFacade.update(hobby)
+        .then(getAllHobbies)
+        .catch(displayError);
+    hobbiesModal.hide();
+}
+
+function deleteHobby(id) {
+    hobbyFacade.deleteHobby(id)
+        .then(getAllHobbies)
+        .catch(displayError);
+}
+
+document.getElementById("hobbies_table").addEventListener("click", evt => {
+    let name = evt.target.name;
+    switch (name) {
+        case "create":
+            formCreateHobby();
+            break;
+        case "edit":
+            formEditHobby(evt.target.value);
+            break;
+        case "delete":
+            deleteHobby(evt.target.value);
+    }
+})
+
+document.getElementById("hobbies_modal_confirm").addEventListener("click", evt => {
+    let name = evt.target.name;
+    switch (name) {
+        case "create": createHobby(); break;
+        case "edit": editHobby(); break;
+    }
+})
+
+function clearHobbiesForm() {
+    let form = document.getElementById("hobbies_form");
+    form.name.value = "";
+    form.link.value = "";
+    form.category.value = "";
+    form.type.value = "";
+}
+
+hobbiesModalElement.addEventListener("hidden.bs.modal", clearHobbiesForm);
 
 
 
