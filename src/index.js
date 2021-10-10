@@ -32,13 +32,23 @@ function displayError(err) {
 }
 
 /* PERSONS */
-function getAllPersons() {
-    personFacade.getAll()
+function populatePersonsTable(response) {
+    response
         .then(data => {
-            let dataTableString = data.map(getPersonRow).join("");
+            let dataTableString;
+            if (Array.isArray(data)) {
+                dataTableString = data.map(getPersonRow).join("");
+            }
+            else {
+                dataTableString = getPersonRow(data);
+            }
             document.getElementById("persons_tbody").innerHTML = dataTableString;
         })
         .catch(displayError);
+}
+
+function getAllPersons() {
+    populatePersonsTable(personFacade.getAll());
 }
 
 function getPersonRow(p) {
@@ -58,6 +68,17 @@ function getPersonRow(p) {
                 </td>
             </tr>`;
 }
+
+document.getElementById("persons_search_btn").addEventListener("click", evt => {
+    let search = document.getElementById("persons_search_field").value;
+    let method = document.getElementById("persons_search_select").value;
+    switch (method) {
+        case "id": populatePersonsTable(personFacade.getById(search)); break;
+        case "phone": populatePersonsTable(personFacade.getByPhone(search)); break;
+        case "zip": populatePersonsTable(personFacade.getByZip(search)); break;
+        case "address": populatePersonsTable(personFacade.getByAddress(search)); break;
+    }
+});
 
 const personsModalElement = document.getElementById("persons_modal");
 const personsModal = new bootstrap.Modal(personsModalElement);

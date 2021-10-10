@@ -103,6 +103,22 @@
                   </div>
                   
                 <h3>Persons</h3>
+                <div class="row gy-1">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <input type="text" class="form-control" id="persons_search_field">
+                    </div>
+                    <div class="col-xl-2 col-md-3 col-sm-4">
+                        <select class="form-select" id="persons_search_select">
+                            <option value="id">ID</option>
+                            <option value="phone">Phone</option>
+                            <option value="zip">Zip</option>
+                            <option value="address">Address ID</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-primary" id="persons_search_btn">Search</button>
+                    </div>
+                </div>
                 <table id="persons_table" class="table table-striped">
                     <thead>
                         <th>ID</th>
