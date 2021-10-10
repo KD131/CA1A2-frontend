@@ -69,16 +69,18 @@ function getPersonRow(p) {
             </tr>`;
 }
 
-document.getElementById("persons_search").addEventListener("submit", evt => {
+const personsSearchForm = document.getElementById("persons_search");
+
+personsSearchForm.addEventListener("submit", evt => {
     evt.preventDefault();
-    let search = document.getElementById("persons_search_field").value;
-    let method = document.getElementById("persons_search_select").value;
-    if (search) {
+    let input = personsSearchForm.input.value;
+    let method = personsSearchForm.method.value;
+    if (input) {
         switch (method) {
-            case "id": populatePersonsTable(personFacade.getById(search)); break;
-            case "phone": populatePersonsTable(personFacade.getByPhone(search)); break;
-            case "zip": populatePersonsTable(personFacade.getByZip(search)); break;
-            case "address": populatePersonsTable(personFacade.getByAddress(search)); break;
+            case "id": populatePersonsTable(personFacade.getById(input)); break;
+            case "phone": populatePersonsTable(personFacade.getByPhone(input)); break;
+            case "zip": populatePersonsTable(personFacade.getByZip(input)); break;
+            case "address": populatePersonsTable(personFacade.getByAddress(input)); break;
         }
     }
     else getAllPersons();
