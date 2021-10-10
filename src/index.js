@@ -267,13 +267,23 @@ personsModalElement.addEventListener("hidden.bs.modal", clearPersonsForm);
 
 
 /* HOBBIES */
-function getAllHobbies() {
-    hobbyFacade.getAll()
+function populateHobbiesTable(response) {
+    response
         .then(data => {
-            let dataTableString = data.map(getHobbyRow).join("");
+            let dataTableString;
+            if (Array.isArray(data)) {
+                dataTableString = data.map(getHobbyRow).join("");
+            }
+            else {
+                dataTableString = getHobbyRow(data);
+            }
             document.getElementById("hobbies_tbody").innerHTML = dataTableString;
         })
         .catch(displayError);
+}
+
+function getAllHobbies() {
+    populateHobbiesTable(hobbyFacade.getAll());
 }
 
 function getHobbyRow(h) {
@@ -289,6 +299,25 @@ function getHobbyRow(h) {
                 </td>
             </tr>`;
 }
+
+const hobbiesSearchForm = document.getElementById("hobbies_search");
+
+hobbiesSearchForm.addEventListener("submit", evt => {
+    evt.preventDefault();
+    let input = hobbiesSearchForm.input.value;
+    let method = hobbiesSearchForm.method.value;
+    if (input) {
+        switch (method) {
+            case "id": populateHobbiesTable(hobbyFacade.getById(input)); break;
+            case "category": populateHobbiesTable(hobbyFacade.getByCategory(input)); break;
+            case "type": populateHobbiesTable(hobbyFacade.getByType(input)); break;
+            case "person": populateHobbiesTable(hobbyFacade.getByPersonId(input)); break;
+            case "zip": populateHobbiesTable(hobbyFacade.getByZip(input)); break;
+            case "address": populateHobbiesTable(hobbyFacade.getByAddress(input)); break;
+        }
+    }
+    else getAllHobbies();
+});
 
 const hobbiesModalElement = document.getElementById("hobbies_modal");
 const hobbiesModal = new bootstrap.Modal(hobbiesModalElement);

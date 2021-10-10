@@ -187,6 +187,26 @@
                 </div>
 
                 <h3>Hobbies</h3>
+                <form id="hobbies_search">
+                    <div class="row gy-1">
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <input type="text" class="form-control" id="hobbies_search_input" name="input">
+                        </div>
+                        <div class="col-xl-2 col-md-3 col-sm-4">
+                            <select class="form-select" id="hobbies_search_method" name="method">
+                                <option value="id">ID</option>
+                                <option value="category">Category</option>
+                                <option value="type">Type</option>
+                                <option value="person">Person ID</option>
+                                <option value="zip">Zip</option>
+                                <option value="address">Address ID</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary" id="hobbies_search_btn" name="search_btn">Search</button>
+                        </div>
+                    </div>
+                </form>
                 <table id="hobbies_table" class="table table-striped">
                     <thead>
                         <th>ID</th>
