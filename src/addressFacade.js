@@ -33,14 +33,20 @@ function update(hobby) {
         .then(handleHttpErrors);
 }
 
-function deleteHobby(id) {
+function deleteAddress(id) {
     let opts = makeOptions("DELETE")
-    return fetch(`${URL}/${id}`)
+    return fetch(`${URL}/${id}`, opts)
         .then(handleHttpErrors);
 }
 
 const addressFacade = {
-    getAll
+    getAll,
+    getById,
+    getByPersonId,
+    getByZip,
+    create,
+    update,
+    deleteAddress
 }
 
 export default addressFacade;

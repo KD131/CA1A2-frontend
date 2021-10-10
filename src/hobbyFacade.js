@@ -50,7 +50,7 @@ function update(hobby) {
 
 function deleteHobby(id) {
     let opts = makeOptions("DELETE")
-    return fetch(`${URL}/${id}`)
+    return fetch(`${URL}/${id}`, opts)
         .then(handleHttpErrors);
 }
 
