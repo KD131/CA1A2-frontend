@@ -40,12 +40,19 @@ function update(person) {
 
 function deletePerson(id) {
     let opts = makeOptions("DELETE")
-    return fetch(`${URL}/${id}`)
+    return fetch(`${URL}/${id}`, opts)
         .then(handleHttpErrors);
 }
 
 const personFacade = {
-    getAll
+    getAll,
+    getById,
+    getByPhone,
+    getByZip,
+    getByAddress,
+    create,
+    update,
+    deletePerson
 }
 
 export default personFacade;

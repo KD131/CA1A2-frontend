@@ -53,6 +53,12 @@ function getPersonRow(p) {
             </tr>`;
 }
 
+function deletePerson(id) {
+    personFacade.deletePerson(id)
+        .then(getAllPersons)
+        .catch(displayError);
+}
+
 var personsModal = new bootstrap.Modal(document.getElementById("persons_modal"));
 document.getElementById("persons_table").addEventListener("click", evt => {
     let name = evt.target.name;
@@ -65,6 +71,8 @@ document.getElementById("persons_table").addEventListener("click", evt => {
             document.querySelector("#persons_modal .modal-title").innerHTML = "Edit person"
             personsModal.toggle();
             break;
+        case "delete":
+            deletePerson(evt.target.value);
     }
 })
 
