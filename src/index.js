@@ -52,8 +52,8 @@ function getPersonRow(p) {
             h.name).join("<br>")}</td>
                 <td>${p.address.zip.id} ${p.address.zip.city}, ${p.address.address}</td>
                 <td>
-                    <button id="edit${p.id}" class="btn btn-warning" name="edit" value="${p.id}">Edit</button>
-                    <button id="delete${p.id}" class="btn btn-danger" name="delete" value="${p.id}">Delete</button>
+                    <button id="persons_edit${p.id}" class="btn btn-warning" name="edit" value="${p.id}">Edit</button>
+                    <button id="persons_delete${p.id}" class="btn btn-danger" name="delete" value="${p.id}">Delete</button>
                 </td>
             </tr>`;
 }
@@ -238,7 +238,7 @@ function getAllHobbies() {
     hobbyFacade.getAll()
         .then(data => {
             let dataTableString = data.map(getHobbyRow).join("");
-            document.getElementById("hobbies_table").innerHTML = dataTableString;
+            document.getElementById("hobbies_tbody").innerHTML = dataTableString;
         })
         .catch(displayError);
 }
@@ -250,6 +250,10 @@ function getHobbyRow(h) {
                 <td>${h.link}</td>
                 <td>${h.category}</td>
                 <td>${h.type}</td>
+                <td>
+                    <button id="hobbies_edit${h.id}" class="btn btn-warning" name="edit" value="${h.id}">Edit</button>
+                    <button id="hobbies_delete${h.id}" class="btn btn-danger" name="delete" value="${h.id}">Delete</button>
+                </td>
             </tr>`;
 }
 
