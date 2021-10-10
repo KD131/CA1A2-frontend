@@ -188,7 +188,7 @@ function getPersonFromForm(form) {
             })
         }
     }
-    
+
     person.hobbies = hobbies;
 
     return person;
@@ -516,7 +516,7 @@ function getAllAddresses() {
     addressFacade.getAll()
         .then(data => {
             let dataTableString = data.map(getAddressRow).join("");
-            document.getElementById("addresses_table").innerHTML = dataTableString;
+            document.getElementById("addresses_tbody").innerHTML = dataTableString;
         })
         .catch(displayError);
 }
